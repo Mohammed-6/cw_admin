@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>Chisel & Wood | Living Space Ideas
-</title>
+    </title>
     <?php include("includes/css.php")?>
 </head>
 
@@ -79,12 +79,13 @@
                                                 </select>
                                             </div>
                                             <div class="col-12 col-sm-6 col-md-2">
-                                                <input type="submit" class="btn btn-primary btn-block" value="Filter Product">
+                                                <input type="submit" class="btn btn-primary btn-block"
+                                                    value="Filter Product">
                                             </div>
                                         </div>
                                     </form>
                                 </div>
-                                
+
 
                             </div>
                         </div>
@@ -116,24 +117,30 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <?php
+                                        include_once('includes/config.php');
+                                        $query = "SELECT ls.*,ic.title as ctitle,isc.title as stitle from living_space ls inner join idea_cat ic on ic.cat_id=ls.category inner join idea_sub_cat isc on isc.id=ls.sub_category";
+                                        $result = mysqli_query($link, $query); $n=1;
+                                        while ($row = mysqli_fetch_array($result)) {
+                                    ?>
                                             <tr>
-                                                <td>1</td>
-                                                <td>Product Name</td>
-                                                <td>Peninsula kitchen</td>
-                                                <td>Coffee table</td>
+                                                <td><?= $n ?></td>
+                                                <td><?= $row['title'] ?></td>
+                                                <td><?= $row['ctitle'] ?></td>
+                                                <td><?= $row['stitle'] ?></td>
                                                 <td>
-                                                    <img src="dist/img/products/1.png" alt="">
+                                                    <img src="images/<?= $row['image'] ?>" alt="">
                                                 </td>
                                                 <td>
                                                     <a href=""><i class="far fa-edit"></i></a>
-                                                    
+
                                                 </td>
                                                 <td><a href=""><i class="far fa-trash-alt"></i></a></td>
                                             </tr>
-                                            
-                                            
+                                            <?php $n++;} ?>
+
                                         </tbody>
-                                        
+
                                     </table>
 
                                 </div>
@@ -155,31 +162,29 @@
     <script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
     <script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
     <script>
-        $(function() {
-            $('.select2').select2()
-            $('.select2bs4').select2({
-                theme: 'bootstrap4'
-            })
+    $(function() {
+        $('.select2').select2()
+        $('.select2bs4').select2({
+            theme: 'bootstrap4'
         })
-
+    })
     </script>
     <script>
-        $(function() {
-            $("#example1").DataTable({
-                "responsive": true,
-                "autoWidth": false,
-            });
-            $('#example2').DataTable({
-                "paging": true,
-                "lengthChange": false,
-                "searching": false,
-                "ordering": true,
-                "info": true,
-                "autoWidth": false,
-                "responsive": true,
-            });
+    $(function() {
+        $("#example1").DataTable({
+            "responsive": true,
+            "autoWidth": false,
         });
-
+        $('#example2').DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "searching": false,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+        });
+    });
     </script>
 </body>
 

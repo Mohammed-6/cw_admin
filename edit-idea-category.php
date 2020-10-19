@@ -40,13 +40,13 @@
                             include_once('includes/config.php');
                             $edit_id = $_GET['id'];
 
-                            $query = "select * from idea_cat WHERE id='$edit_id'";
+                            $query = "select * from idea_cat WHERE cat_id='$edit_id'";
                             $result = mysqli_query($link, $query);
                             ?>
                                     <?php
                                 while ($rows = mysqli_fetch_array($result)) {
                                 ?>
-                                    <form method="post" enctype="multipart/form-data" action="edit-idea-category.php?id=<?php echo $edit_id; ?>">
+                                    <form method="post" enctype="multipart/form-data" action="">
                                         <div class="form-group">
                                             <label>Title</label>
                                             <input type="text" class="form-control" value="<?php echo $rows['title']; ?>" name="title">
@@ -68,7 +68,7 @@
 
 
                                     
-                                    $sql = "update idea_cat set title='$title' where id=$update_id";
+                                    $sql = "UPDATE idea_cat set title='$title' where cat_id=$update_id";
                                     if (mysqli_query($link, $sql)) {
                                         echo "File Updated Successfully";
                                     } else {

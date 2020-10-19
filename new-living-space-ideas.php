@@ -1,3 +1,26 @@
+<?php
+include_once('includes/config.php');
+if(isset($_POST['submit'])) {
+    $category = $_POST['category'];
+    $sub_category = $_POST['sub_category'];
+    $product_name = $_POST['product_name'];
+    $catalogue = '';
+    $description = $_POST['description'];
+    $product_image = '';
+
+    if(!empty($_FILES['catalogue']['name'])) {
+        $catalogue = $_FILES['catalogue']['name'];
+        move_uploaded_file($_FILES['catalogue']['tmp_name'], 'images/'.$catalogue);
+    }
+    if(!empty($_FILES['product_image']['name'])) {
+        $product_image = $_FILES['product_image']['name'];
+        move_uploaded_file($_FILES['product_image']['tmp_name'], 'images/'.$product_image);
+    }
+    $sql = mysqli_query($link, "INSERT INTO `living_space`(`id`, `category`, `sub_category`, `title`, `catalogue`, `description`, `image`) VALUES 
+    ('','$category','$sub_category','$product_name','$catalogue','$description','$product_image')");
+    header("Location:living-space-ideas.php");
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -36,22 +59,27 @@
                         <div class="col-12 col-sm-6 col-md-12">
                             <div class="card card-default">
                                 <div class="card-body">
-                                    <form action="">
+                                    <?php
+                                        $query = "select * from idea_cat";
+                                        $result = mysqli_query($link, $query);
+                                    ?>
+                                    <form action="" method="post" enctype="multipart/form-data">
                                         <div class="row">
                                             <div class="col-12 col-sm-6 col-md-6">
                                                 <div class="form-group">
                                                     <label>Main Category</label>
-                                                    <select class="form-control select2">
-                                                        <option selected disabled="disabled">Select Main Category</option>
-                                                        <option value="Bedroom">Bedroom</option>
-                                                        <option value="Living room">Living room</option>
-                                                        <option value="Kitchen">Kitchen</option>
-                                                        <option value="Living room">Living room</option>
-                                                        <option value="Dining room">Dining room</option>
-                                                        <option value="Kids room">Kids room</option>
-                                                        <option value="Mandhir room">Bathroom cabinets</option>
-                                                        <option value="Offices">Offices</option>
-                                                       
+                                                    <select class="form-control select2 category" name="category">
+                                                        <option selected disabled="disabled">Select Main Category
+                                                        </option>
+                                                        <?php $n = 1;
+                                                while ($rows = mysqli_fetch_array($result)) {
+                                            ?>
+                                                        <option value="<?php echo $rows['cat_id']; ?>">
+                                                            <?php echo $rows['title']; ?></option>
+                                                        <?php $n++;
+                                                }
+                                            ?>
+
                                                     </select>
                                                 </div>
                                             </div>
@@ -59,45 +87,47 @@
                                                 <div class="form-group">
                                                     <div class="form-group">
                                                         <label>Sub Category</label>
-                                                        <select class="form-control select2">
-                                                            <option selected disabled="disabled">Select Sub Category</option>
-                                                            <option value="Bed">Bed</option>
-                                                            <option value="Wardrobe">Wardrobe</option>
-                                                            <option value="Consoles">Consoles</option>
-                                                            
+                                                        <select class="form-control select2 sub-category"
+                                                            name="sub_category">
+                                                            <option selected disabled="disabled">Select Sub Category
+                                                            </option>
+
                                                         </select>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-12 col-sm-6 col-md-6">
                                                 <div class="form-group">
-                                                   <label>Product Name</label>
-                                                    <input type="text" class="form-control" placeholder="Enter Product Name">
+                                                    <label>Product Name</label>
+                                                    <input type="text" class="form-control" name="product_name"
+                                                        placeholder="Enter Product Name">
                                                 </div>
                                             </div>
-                
+
                                             <div class="col-12 col-sm-6 col-md-6">
                                                 <div class="form-group">
                                                     <label>Upload Catalogue</label>
-                                                    <input type="file" class="form-control">
+                                                    <input type="file" class="form-control" name="catalogue">
                                                 </div>
                                             </div>
-                                            
+
                                             <div class="col-12 col-sm-6 col-md-12">
                                                 <div class="form-group">
                                                     <label>Product Description</label>
-                                                    <textarea class="form-control" rows="5" placeholder="Product Description"></textarea>
+                                                    <textarea class="form-control" rows="5"
+                                                        placeholder="Product Description" name="description"></textarea>
                                                 </div>
                                             </div>
                                             <div class="col-12 col-sm-6 col-md-12">
                                                 <div class="form-group">
                                                     <label>Upload Product Image</label>
-                                                    <input type="file" class="form-control">
+                                                    <input type="file" class="form-control" name="product_image">
                                                 </div>
                                             </div>
-                                            
+
                                             <div class="col-12 col-sm-6 col-md-2">
-                                                <input type="submit" class="btn btn-success" value="Add Product">
+                                                <input type="submit" name="submit" class="btn btn-success"
+                                                    value="Add Product">
                                             </div>
                                         </div>
                                     </form>
@@ -122,13 +152,23 @@
     <script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
     <script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
     <script>
-        $(function() {
-            $('.select2').select2()
-            $('.select2bs4').select2({
-                theme: 'bootstrap4'
-            })
+    $(function() {
+        $('.select2').select2()
+        $('.select2bs4').select2({
+            theme: 'bootstrap4'
         })
-
+    })
+    $('.category').change(function() {
+        val_ = $(this).val();
+        $.ajax({
+            url: 'controller.php?get-subcategory=' + val_,
+            type: 'get',
+            cache: false,
+            success: function(data) {
+                $('.sub-category').html(data).show();
+            }
+        })
+    })
     </script>
 
 </body>

@@ -58,13 +58,13 @@
                                                 <td><?= $n ?>.</td>
                                                 <td><?php echo $rows['title']; ?></td>
                                                 <td>
-                                                    <a class="btn btn-info btn-sm" href="edit-idea-category.php?id=<?php echo $rows['id'];?>">
+                                                    <a class="btn btn-info btn-sm" href="edit-idea-category.php?id=<?php echo $rows['cat_id'];?>">
                                                         <i class="fas fa-pencil-alt"></i> &nbsp; Edit
                                                     </a>
 
                                                 </td>
                                                 <td>
-                                                    <a class="btn btn-danger btn-sm" href="delete-idea-category.php?id=<?php echo $rows['id'];?>" onclick="return confirm('Are you sure you want to delete?');">
+                                                    <a class="btn btn-danger btn-sm" href="delete-idea-category.php?id=<?php echo $rows['cat_id'];?>" onclick="return confirm('Are you sure you want to delete?');">
                                                         <i class="fas fas fa-trash"></i> &nbsp; Delete
                                                     </a>
                                                 </td>

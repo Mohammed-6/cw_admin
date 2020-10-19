@@ -39,7 +39,7 @@
                                     <table class="table table-bordered">
                                          <?php
                                         include_once('includes/config.php');
-                                        $query = "select * from idea_sub_cat where cat_id =".$cat_id."";
+                                        $query = "SELECT sa.*,ca.title as ctitle from idea_sub_cat sa inner join idea_cat ca on ca.cat_id=sa.cat_id";
                                         $result = mysqli_query($link, $query);
                                     ?>
                                         <thead>
@@ -57,8 +57,8 @@
                                             ?>
                                             <tr>
                                                 <td><?= $n ?></td>
+                                                <td><?php echo $rows['ctitle']; ?></td>
                                                 <td><?php echo $rows['title']; ?></td>
-                                                <td>Bed</td>
                                                 <td class="text-center"><a href=""><button class="btn btn-info btn-xs"><i class="far fa-edit"></i></button></a></td>
                                                 <td class="text-center"><a href=""><button class="btn btn-danger btn-xs"><i class="far fa-trash-alt"></i></button></a></td>
 
