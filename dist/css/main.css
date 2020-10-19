@@ -1,0 +1,19 @@
+.login-page{
+    background-image: url(../img/login-bg.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center
+}
+.login-logo img{
+    width: 150px;
+    margin-top: 30px;
+}
+.cw-dashboard{
+    background: red;
+}
+.products .table tbody tr td img{
+    width: 50px
+}
+.products .table tbody tr td{
+    vertical-align: middle
+}
